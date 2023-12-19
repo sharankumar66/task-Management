@@ -1,4 +1,4 @@
 app:
-  name: task
+  name: taskManagement
 server:
   port: 8091

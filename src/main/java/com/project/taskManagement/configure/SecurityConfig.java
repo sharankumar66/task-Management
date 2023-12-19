@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -33,13 +34,13 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 @EnableWebMvc
-public class SecurityConfig {
+public class SecurityConfig  {
 
 	private final JwtAuthenticationFilter filter;
 
 	private final CustomUserDetails customUserDetailsService;
 
-	// Configuring HttpSecurity
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -49,13 +50,9 @@ public class SecurityConfig {
 //       				.permitAll()	  
 //                       .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
 //                       .requestMatchers("/api/users/**").hasAuthority("USER")
-						.requestMatchers("/swagger-ui/**").permitAll()
-						.requestMatchers("/api/v1/admin/**",
-								"/swagger-ui/**",
-								"/swagger-resources/**",
-								"/webjars/**"
-								
-								).hasAuthority(Role.ADMIN.name())
+						.requestMatchers("/swagger-ui/**","/v3/api-docs/**")
+	                       .permitAll()
+						.requestMatchers("/api/v1/admin/**").hasAuthority(Role.ADMIN.name())
 						.requestMatchers("/api/v1/users/**").hasAuthority(Role.USER.name()).anyRequest()
 						
 						.authenticated())
